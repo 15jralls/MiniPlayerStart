@@ -45,6 +45,15 @@
     <length>2:21</length>
     <genre>Pop</genre>
   </song>
+  <song>
+    <id>6</id>
+    <title>The Deep</title>
+    <artist>Hydelic</artist>
+    <album>Tetris Effect - The Complete Soundtrack</album>
+    <filename>C:\Users\unche\Music\The Deep.mp3</filename>
+    <length>5:00</length>
+    <genre>Game</genre>
+  </song>
   <playlist>
     <name>Cool stuff</name>
   </playlist>

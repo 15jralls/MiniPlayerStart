@@ -53,6 +53,11 @@ namespace MiniPlayerWpf
                 int songId = Convert.ToInt32(songIdComboBox.SelectedItem);
                 Song s = musicRepo.GetSong(songId);
                 songTitle.Content = s.Title;
+                songArtist.Content = s.Artist;
+                songAlbum.Content = s.Album;
+                songFilename.Content = s.Filename;
+                songlength.Content = s.Length;
+                songGenre.Content = s.Genre;
                 mediaPlayer.Open(new Uri(s.Filename));
             }
         }        
@@ -65,6 +70,41 @@ namespace MiniPlayerWpf
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Stop();
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                FileName = "",
+                DefaultExt = "*.wma;*.wav;*mp3;*.m4a",
+                Filter = "Media files|*.mp3;*.m4a;*.wma;*.wav|MP3 (*.mp3)|*.mp3|M4A (*.m4a)|*.m4a|Windows Media Audio (*.wma)|*.wma|Wave files (*.wav)|*.wav|All files|*.*"
+            };
+
+            bool? result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                Song newSong = musicRepo.GetSongDetails(openFileDialog.FileName);
+                int newId = musicRepo.AddSong(newSong);
+                musicRepo.Save();
+                songIds.Add(newId);
+                songIdComboBox.SelectedItem = newId;
+            }
+        }
+
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            int songId = (int)songIdComboBox.SelectedItem;
+            bool result = musicRepo.DeleteSong(songId);
+            musicRepo.Save();
+            if (result)
+            {
+                songIds.Remove(songId);
+                if (songIds.Count != 0)
+                {
+                    songIdComboBox.SelectedItem = 1;
+                }
+            }
         }
     }
 }
